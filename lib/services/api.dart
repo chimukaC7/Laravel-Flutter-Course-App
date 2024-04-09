@@ -15,6 +15,7 @@ class ApiService {
   final String baseUrl = 'http://flutter-api.laraveldaily.com/api/';
 
   Future<List<Category>> fetchCategories() async {
+
     http.Response response = await http.get(Uri.parse(baseUrl + 'categories'),
       headers: {
         HttpHeaders.acceptHeader: 'application/json',
@@ -25,9 +26,11 @@ class ApiService {
     List categories = jsonDecode(response.body);
 
     return categories.map((category) => Category.fromJson(category)).toList();
+
   }
 
   Future<Category> addCategory(String name) async {
+
     String uri = baseUrl + 'categories';
 
     http.Response response = await http.post(Uri.parse(uri),
@@ -43,9 +46,11 @@ class ApiService {
     }
 
     return Category.fromJson(jsonDecode(response.body));
+
   }
 
   Future<Category> updateCategory(Category category) async {
+
     String uri = baseUrl + 'categories/' + category.id.toString();
 
     http.Response response = await http.put(Uri.parse(uri),
@@ -61,12 +66,13 @@ class ApiService {
     }
 
     return Category.fromJson(jsonDecode(response.body));
+
   }
 
   Future<void> deleteCategory(id) async {
+
     String uri = baseUrl + 'categories/' + id.toString();
-    http.Response response = await http.delete(
-      Uri.parse(uri),
+    http.Response response = await http.delete(Uri.parse(uri),
       headers: {
         HttpHeaders.acceptHeader: 'application/json',
         HttpHeaders.authorizationHeader: 'Bearer $token'
@@ -76,11 +82,12 @@ class ApiService {
     if (response.statusCode != 204) {
       throw Exception('Error happened on delete');
     }
+
   }
 
   Future<List<Transaction>> fetchTransactions() async {
-    http.Response response = await http.get(
-      Uri.parse(baseUrl + 'transactions'),
+
+    http.Response response = await http.get( Uri.parse(baseUrl + 'transactions'),
       headers: {
         HttpHeaders.acceptHeader: 'application/json',
         HttpHeaders.authorizationHeader: 'Bearer $token'
@@ -90,9 +97,11 @@ class ApiService {
     List transactions = jsonDecode(response.body);
 
     return transactions.map((transaction) => Transaction.fromJson(transaction)).toList();
+
   }
 
   Future<Transaction> addTransaction(String amount, String category, String description, String date) async {
+
     String uri = baseUrl + 'transactions';
 
     http.Response response = await http.post(Uri.parse(uri),
@@ -113,9 +122,11 @@ class ApiService {
     }
 
     return Transaction.fromJson(jsonDecode(response.body));
+
   }
 
   Future<Transaction> updateTransaction(Transaction transaction) async {
+
     String uri = baseUrl + 'transactions/' + transaction.id.toString();
 
     http.Response response = await http.put(Uri.parse(uri),
@@ -136,9 +147,11 @@ class ApiService {
     }
 
     return Transaction.fromJson(jsonDecode(response.body));
+
   }
 
   Future<void> deleteTransaction(id) async {
+
     String uri = baseUrl + 'transactions/' + id.toString();
     http.Response response = await http.delete(
       Uri.parse(uri),
