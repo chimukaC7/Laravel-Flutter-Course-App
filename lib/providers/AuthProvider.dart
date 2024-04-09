@@ -14,15 +14,16 @@ class AuthProvider extends ChangeNotifier {
 
   Future<void> init() async {
     this.token = await getToken();
+
     if (this.token.isNotEmpty) {
       this.isAuthenticated = true;
     }
+
     this.apiService = new ApiService(this.token);
     notifyListeners();
   }
 
-  Future<void> register(String name, String email, String password,
-      String passwordConfirm, String deviceName) async {
+  Future<void> register(String name, String email, String password, String passwordConfirm, String deviceName) async {
     this.token = await apiService.register(name, email, password, passwordConfirm, deviceName);
     setToken(this.token);
     this.isAuthenticated = true;

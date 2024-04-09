@@ -15,8 +15,7 @@ class ApiService {
   final String baseUrl = 'http://flutter-api.laraveldaily.com/api/';
 
   Future<List<Category>> fetchCategories() async {
-    http.Response response = await http.get(
-      Uri.parse(baseUrl + 'categories'),
+    http.Response response = await http.get(Uri.parse(baseUrl + 'categories'),
       headers: {
         HttpHeaders.acceptHeader: 'application/json',
         HttpHeaders.authorizationHeader: 'Bearer $token'
