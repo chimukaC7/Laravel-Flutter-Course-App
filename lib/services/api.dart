@@ -72,6 +72,7 @@ class ApiService {
   Future<void> deleteCategory(id) async {
 
     String uri = baseUrl + 'categories/' + id.toString();
+
     http.Response response = await http.delete(Uri.parse(uri),
       headers: {
         HttpHeaders.acceptHeader: 'application/json',
@@ -153,6 +154,7 @@ class ApiService {
   Future<void> deleteTransaction(id) async {
 
     String uri = baseUrl + 'transactions/' + id.toString();
+
     http.Response response = await http.delete(
       Uri.parse(uri),
       headers: {
@@ -164,10 +166,12 @@ class ApiService {
     if (response.statusCode != 204) {
       throw Exception('Error happened on delete');
     }
+
   }
 
   Future<String> register(String name, String email, String password,
       String passwordConfirm, String deviceName) async {
+
     String uri = baseUrl + 'auth/register';
 
     http.Response response = await http.post(Uri.parse(uri),
@@ -185,13 +189,16 @@ class ApiService {
 
     if (response.statusCode == 422) {
       Map<String, dynamic> body = jsonDecode(response.body);
+
       Map<String, dynamic> errors = body['errors'];
       String errorMessage = '';
+
       errors.forEach((key, value) {
         value.forEach((element) {
           errorMessage += element + '\n';
         });
       });
+
       throw Exception(errorMessage);
     }
 
@@ -200,6 +207,7 @@ class ApiService {
   }
 
   Future<String> login(String email, String password, String deviceName) async {
+
     String uri = baseUrl + 'auth/login';
 
     http.Response response = await http.post(Uri.parse(uri),
@@ -215,13 +223,16 @@ class ApiService {
 
     if (response.statusCode == 422) {
       Map<String, dynamic> body = jsonDecode(response.body);
+
       Map<String, dynamic> errors = body['errors'];
       String errorMessage = '';
+
       errors.forEach((key, value) {
         value.forEach((element) {
           errorMessage += element + '\n';
         });
       });
+
       throw Exception(errorMessage);
     }
 

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+ import 'package:flutter/material.dart';
 import 'package:my_first_app/providers/AuthProvider.dart';
 import 'package:my_first_app/providers/CategoryProvider.dart';
 import 'package:my_first_app/providers/TransactionProvider.dart';

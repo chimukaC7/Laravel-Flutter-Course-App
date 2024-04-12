@@ -13,6 +13,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -115,11 +116,7 @@ class _LoginState extends State<Login> {
 
     final AuthProvider provider = Provider.of<AuthProvider>(context, listen: false);
     try {
-      await provider.login(
-          emailController.text,
-          passwordController.text,
-          deviceName
-      );
+      await provider.login(emailController.text, passwordController.text, deviceName);
     } catch (Exception) {
       setState(() {
         errorMessage = Exception.toString().replaceAll('Exception: ', '');
