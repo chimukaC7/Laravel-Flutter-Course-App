@@ -63,6 +63,7 @@ class _TransactionEditState extends State<TransactionEdit> {
                   if (newValue == null) {
                     return 'Invalid amount format';
                   }
+                  return null;
                 },
                 onChanged: (text) => setState(() => errorMessage = ''),
               ),
@@ -108,7 +109,7 @@ class _TransactionEditState extends State<TransactionEdit> {
                       onPressed: () => saveTransaction(context),
                     ),
                     ElevatedButton(
-                      style: ElevatedButton.styleFrom(primary: Colors.red),
+                      style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
                       child: Text('Cancel'),
                       onPressed: () => Navigator.pop(context),
                     ),
@@ -162,6 +163,7 @@ class _TransactionEditState extends State<TransactionEdit> {
             if (value == null) {
               return 'Please select category';
             }
+            return null;
           },
         );
       },

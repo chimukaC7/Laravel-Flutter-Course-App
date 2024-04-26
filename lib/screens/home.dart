@@ -46,9 +46,7 @@ class _HomeState extends State<Home> {
 
   Future<void> onItemTapped(int index) async {
     if (index == 2) {
-      final AuthProvider provider =
-      Provider.of<AuthProvider>(context, listen: false);
-
+      final AuthProvider provider =  Provider.of<AuthProvider>(context, listen: false);
       await provider.logOut();
     } else {
       setState(() {

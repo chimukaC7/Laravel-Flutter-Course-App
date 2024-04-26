@@ -31,6 +31,7 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Register'),
@@ -148,7 +149,9 @@ class _RegisterState extends State<Register> {
     }
 
     final AuthProvider provider = Provider.of<AuthProvider>(context, listen: false);
+
     try {
+
       await provider.register(
           nameController.text,
           emailController.text,
@@ -158,10 +161,13 @@ class _RegisterState extends State<Register> {
       );
 
       Navigator.pop(context);
+
     } catch (Exception) {
+
       setState(() {
         errorMessage = Exception.toString().replaceAll('Exception: ', '');
       });
+
     }
   }
 

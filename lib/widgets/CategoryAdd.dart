@@ -44,7 +44,7 @@ class _CategoryAddState extends State<CategoryAdd> {
                       onPressed: () => saveCategory(context),
                     ),
                     ElevatedButton(
-                      style: ElevatedButton.styleFrom(primary: Colors.red),
+                      style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
                       child: Text('Cancel'),
                       onPressed: () => Navigator.pop(context),
                     ),

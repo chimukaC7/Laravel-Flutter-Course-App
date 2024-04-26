@@ -52,6 +52,7 @@ class _TransactionAddState extends State<TransactionAdd> {
                   if (newValue == null) {
                     return 'Invalid amount format';
                   }
+                  return null;
                 },
                 onChanged: (text) => setState(() => errorMessage = ''),
               ),
@@ -97,7 +98,7 @@ class _TransactionAddState extends State<TransactionAdd> {
                       onPressed: () => saveTransaction(context),
                     ),
                     ElevatedButton(
-                      style: ElevatedButton.styleFrom(primary: Colors.red),
+                      style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
                       child: Text('Cancel'),
                       onPressed: () => Navigator.pop(context),
                     ),
@@ -150,6 +151,7 @@ class _TransactionAddState extends State<TransactionAdd> {
             if (value == null) {
               return 'Please select category';
             }
+            return null;
           },
         );
       },

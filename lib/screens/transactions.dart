@@ -13,6 +13,7 @@ class Transactions extends StatefulWidget {
 class _TransactionsState extends State<Transactions> {
   @override
   Widget build(BuildContext context) {
+
     final provider = Provider.of<TransactionProvider>(context);
     List<Transaction> transactions = provider.transactions;
 

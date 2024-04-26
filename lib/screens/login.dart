@@ -28,6 +28,7 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Login'),
@@ -115,6 +116,7 @@ class _LoginState extends State<Login> {
     }
 
     final AuthProvider provider = Provider.of<AuthProvider>(context, listen: false);
+
     try {
       await provider.login(emailController.text, passwordController.text, deviceName);
     } catch (Exception) {
@@ -122,6 +124,7 @@ class _LoginState extends State<Login> {
         errorMessage = Exception.toString().replaceAll('Exception: ', '');
       });
     }
+
   }
 
   Future<void> getDeviceName() async {
