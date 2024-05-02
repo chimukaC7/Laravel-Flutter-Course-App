@@ -4,6 +4,7 @@ import 'package:my_first_app/providers/AuthProvider.dart';
 import 'package:my_first_app/services/api.dart';
 
 class TransactionProvider extends ChangeNotifier {
+
   List<Transaction> transactions = [];
   late ApiService apiService;
   late AuthProvider authProvider;

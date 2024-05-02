@@ -4,6 +4,7 @@ import 'package:my_first_app/providers/AuthProvider.dart';
 import 'package:my_first_app/services/api.dart';
 
 class CategoryProvider extends ChangeNotifier {
+
   List<Category> categories = [];
   late ApiService apiService;
   late AuthProvider authProvider;
@@ -23,6 +24,7 @@ class CategoryProvider extends ChangeNotifier {
   Future<void> addCategory(String name) async {
     try {
       Category addedCategory = await apiService.addCategory(name);
+
       categories.add(addedCategory);
 
       notifyListeners();
