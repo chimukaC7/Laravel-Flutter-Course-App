@@ -37,9 +37,15 @@ class ApiService {
 
 
 
+        //if status is greater than 400, there is a problem
+      } else if (response.statusCode >= 400) {
+        //if we throw an exception or if any other code in there throws an exception.
+        // In that case, as mentioned, the future will be rejected
+        // and that would lead to this hasError property
+        throw Exception('Failed to fetch items. Please try again later.');
       } else {
         // Handle different HTTP status codes as needed
-        throw Exception('Failed to load API: ${response.statusCode}');
+        throw Exception('Failed to load API data: ${response.statusCode}');
       }
 
     } on http.ClientException catch (e) {
