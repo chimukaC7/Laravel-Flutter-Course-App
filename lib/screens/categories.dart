@@ -20,22 +20,34 @@ class _CategoriesState extends State<Categories> {
         appBar: AppBar(
           title: Text('Categories'),
         ),
+
+       //UI Integration: Use FutureBuilder to handle asynchronous data fetching and errors in the UI
+       //FutureBuilder is a Widget that will help you to execute some asynchronous function and based on that function’s result your UI will update.
         body: FutureBuilder<List<Category>>(
           future: provider.apiService.fetchCategories(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               // Show a loading spinner while the request is being processed
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
+
             } else if (snapshot.hasError) {
               // Show an error message if something went wrong
               return Center(child: Text('Error: ${snapshot.error}'));
+
+            }else if (snapshot.data!.isEmpty) {
+              // if that is not empty.
+              return const Center(child: Text('No items added yet.'));
+
             } else if (snapshot.hasData) {
               // Display the list of products if the data is available
               final categories = snapshot.data!;
+
               return   ListView.builder(
                 itemCount: categories.length,
                 itemBuilder: (context, index) {
+
                   Category category = categories[index];
+
                   return ListTile(
                     title: Text(category.name),
                     trailing: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
