@@ -14,58 +14,78 @@ class _CategoriesState extends State<Categories> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<CategoryProvider>(context);
-    List<Category> categories = provider.categories;
+    // List<Category> categories = provider.categories;
 
     return Scaffold(
         appBar: AppBar(
           title: Text('Categories'),
         ),
-        body: ListView.builder(
-          itemCount: categories.length,
-          itemBuilder: (context, index) {
-            Category category = categories[index];
-            return ListTile(
-              title: Text(category.name),
-              trailing: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.edit),
-                  onPressed: () {
-                    showModalBottomSheet(
-                        isScrollControlled: true,
-                        context: context,
-                        builder: (BuildContext context) {
-                          return CategoryEdit(
-                              category, provider.updateCategory);
-                        });
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text("Confirmation"),
-                            content: Text("Are you sure you want to delete?"),
-                            actions: [
-                              TextButton(
-                                child: Text("Cancel"),
-                                onPressed: () => Navigator.pop(context),
-                              ),
-                              TextButton(
-                                child: Text("Delete"),
-                                onPressed: () => deleteCategory(provider.deleteCategory, category)
-                              ),
-                            ],
-                          );
-                        });
-                  },
-                )
-              ]),
-            );
+        body: FutureBuilder<List<Category>>(
+          future: provider.apiService.fetchCategories(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              // Show a loading spinner while the request is being processed
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              // Show an error message if something went wrong
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (snapshot.hasData) {
+              // Display the list of products if the data is available
+              final categories = snapshot.data!;
+              return   ListView.builder(
+                itemCount: categories.length,
+                itemBuilder: (context, index) {
+                  Category category = categories[index];
+                  return ListTile(
+                    title: Text(category.name),
+                    trailing: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                      IconButton(
+                        icon: Icon(Icons.edit),
+                        onPressed: () {
+                          showModalBottomSheet(
+                              isScrollControlled: true,
+                              context: context,
+                              builder: (BuildContext context) {
+                                return CategoryEdit(
+                                    category, provider.updateCategory);
+                              });
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.delete),
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text("Confirmation"),
+                                  content: Text("Are you sure you want to delete?"),
+                                  actions: [
+                                    TextButton(
+                                      child: Text("Cancel"),
+                                      onPressed: () => Navigator.pop(context),
+                                    ),
+                                    TextButton(
+                                        child: Text("Delete"),
+                                        onPressed: () => deleteCategory(provider.deleteCategory, category)
+                                    ),
+                                  ],
+                                );
+                              });
+                        },
+                      )
+                    ]),
+                  );
+                },
+              );
+            } else {
+              // Handle the case where no data was received
+              return Center(child: Text('No products available'));
+            }
           },
         ),
+
+
       floatingActionButton: new FloatingActionButton(
           onPressed: () {
             showModalBottomSheet(

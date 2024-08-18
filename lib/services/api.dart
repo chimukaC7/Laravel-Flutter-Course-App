@@ -65,6 +65,7 @@ class ApiService {
       // Handle any other exceptions
       throw Exception('Unexpected error: $e');
     }
+
   }
 
   Future<Category> addCategory(String name) async {
