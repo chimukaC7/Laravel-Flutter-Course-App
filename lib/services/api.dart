@@ -29,13 +29,17 @@ class ApiService {
       // Check if the response was successful
       if (response.statusCode == 200) {
 
+        if (response.body != 'null') {
+
         // Parse the JSON response body
         List jsonResponse = jsonDecode(response.body);
 
         // Convert the JSON list into a list of Model instances
         return jsonResponse.map((data) => Category.fromJson(data)).toList();
 
-
+      } else {
+        return [];
+      }
 
         //if status is greater than 400, there is a problem
       } else if (response.statusCode >= 400) {
