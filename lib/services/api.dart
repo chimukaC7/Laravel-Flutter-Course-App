@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -16,22 +17,44 @@ class ApiService {
   final String baseUrl = 'http://flutter-api.laraveldaily.com/api/';
 
   Future<List<Category>> fetchCategories() async {
+    try {
+      // Make an HTTP GET request and set a timeout of 10 seconds
+      http.Response response = await http.get(Uri.parse(baseUrl + 'categories'),
+        headers: {HttpHeaders.acceptHeader: 'application/json', HttpHeaders.authorizationHeader: 'Bearer $token'},
+      ).timeout(Duration(seconds: 30));
 
-    http.Response response = await http.get(Uri.parse(baseUrl + 'categories'),
-      headers: {
-        HttpHeaders.acceptHeader: 'application/json',
-        HttpHeaders.authorizationHeader: 'Bearer $token'
-      },
-    );
+      // Check if the response was successful
+      if (response.statusCode == 200) {
 
-    List categories = jsonDecode(response.body);
+        // Parse the JSON response body
+        List jsonResponse = jsonDecode(response.body);
 
-    return categories.map((category) => Category.fromJson(category)).toList();
+        // Convert the JSON list into a list of Model instances
+        return jsonResponse.map((data) => Category.fromJson(data)).toList();
 
+
+
+      } else {
+        // Handle different HTTP status codes as needed
+        throw Exception('Failed to load API: ${response.statusCode}');
+      }
+
+    } on http.ClientException catch (e) {
+      // Handle client-side errors (e.g., bad request)
+      throw Exception('Client Error: $e');
+    } on FormatException catch (e) {
+      // Handle JSON format errors
+      throw Exception('Bad response format: $e');
+    } on TimeoutException catch (e) {
+      // Handle timeout errors
+      throw Exception('Request timeout: $e');
+    } on Exception catch (e) {
+      // Handle any other exceptions
+      throw Exception('Unexpected error: $e');
+    }
   }
 
   Future<Category> addCategory(String name) async {
-
     String uri = baseUrl + 'categories';
 
     http.Response response = await http.post(Uri.parse(uri),
@@ -47,11 +70,9 @@ class ApiService {
     }
 
     return Category.fromJson(jsonDecode(response.body));
-
   }
 
   Future<Category> updateCategory(Category category) async {
-
     String uri = baseUrl + 'categories/' + category.id.toString();
 
     http.Response response = await http.put(Uri.parse(uri),
@@ -67,11 +88,9 @@ class ApiService {
     }
 
     return Category.fromJson(jsonDecode(response.body));
-
   }
 
   Future<void> deleteCategory(id) async {
-
     String uri = baseUrl + 'categories/' + id.toString();
 
     http.Response response = await http.delete(Uri.parse(uri),
@@ -84,7 +103,6 @@ class ApiService {
     if (response.statusCode != 204) {
       throw Exception('Error happened on delete');
     }
-
   }
 
   Future<List<Transaction>> fetchTransactions() async {
@@ -99,11 +117,9 @@ class ApiService {
     List transactions = jsonDecode(response.body);
 
     return transactions.map((transaction) => Transaction.fromJson(transaction)).toList();
-
   }
 
   Future<Transaction> addTransaction(String amount, String category, String description, String date) async {
-
     String uri = baseUrl + 'transactions';
 
     http.Response response = await http.post(Uri.parse(uri),
@@ -124,11 +140,9 @@ class ApiService {
     }
 
     return Transaction.fromJson(jsonDecode(response.body));
-
   }
 
   Future<Transaction> updateTransaction(Transaction transaction) async {
-
     String uri = baseUrl + 'transactions/' + transaction.id.toString();
 
     http.Response response = await http.put(Uri.parse(uri),
@@ -149,11 +163,9 @@ class ApiService {
     }
 
     return Transaction.fromJson(jsonDecode(response.body));
-
   }
 
   Future<void> deleteTransaction(id) async {
-
     String uri = baseUrl + 'transactions/' + id.toString();
 
     http.Response response = await http.delete(
@@ -167,12 +179,9 @@ class ApiService {
     if (response.statusCode != 204) {
       throw Exception('Error happened on delete');
     }
-
   }
 
-  Future<String> register(String name, String email, String password,
-      String passwordConfirm, String deviceName) async {
-
+  Future<String> register(String name, String email, String password, String passwordConfirm, String deviceName) async {
     String uri = baseUrl + 'auth/register';
 
     http.Response response = await http.post(Uri.parse(uri),
@@ -208,7 +217,6 @@ class ApiService {
   }
 
   Future<String> login(String email, String password, String deviceName) async {
-
     String uri = baseUrl + 'auth/login';
 
     http.Response response = await http.post(Uri.parse(uri),
