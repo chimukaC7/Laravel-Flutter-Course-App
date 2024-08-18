@@ -20,7 +20,10 @@ class ApiService {
     try {
       // Make an HTTP GET request and set a timeout of 10 seconds
       http.Response response = await http.get(Uri.parse(baseUrl + 'categories'),
-        headers: {HttpHeaders.acceptHeader: 'application/json', HttpHeaders.authorizationHeader: 'Bearer $token'},
+        headers: {
+          HttpHeaders.acceptHeader: 'application/json',
+          HttpHeaders.authorizationHeader: 'Bearer $token'
+        },
       ).timeout(Duration(seconds: 30));
 
       // Check if the response was successful
