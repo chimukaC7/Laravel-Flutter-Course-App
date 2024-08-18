@@ -13,7 +13,6 @@ class Transactions extends StatefulWidget {
 class _TransactionsState extends State<Transactions> {
   @override
   Widget build(BuildContext context) {
-
     final provider = Provider.of<TransactionProvider>(context);
     // List<Transaction> transactions = provider.transactions;
 
@@ -32,7 +31,7 @@ class _TransactionsState extends State<Transactions> {
             // Show an error message if something went wrong
             return Center(child: Text('Error: ${snapshot.error}'));
 
-          }else if (snapshot.data!.isEmpty) {
+          } else if (snapshot.data!.isEmpty) {
             // if that is not empty.
             return const Center(child: Text('No items added yet.'));
 
@@ -40,10 +39,12 @@ class _TransactionsState extends State<Transactions> {
             // Display the list of products if the data is available
             final transactions = snapshot.data!;
 
-            return   ListView.builder(
+            return ListView.builder(
               itemCount: transactions.length,
               itemBuilder: (context, index) {
+
                 Transaction transaction = transactions[index];
+
                 return ListTile(
                   title: Text('\$' + transaction.amount),
                   subtitle: Text(transaction.categoryName),
@@ -77,9 +78,7 @@ class _TransactionsState extends State<Transactions> {
                                     child: Text("Cancel"),
                                     onPressed: () => Navigator.pop(context),
                                   ),
-                                  TextButton(
-                                      child: Text("Delete"),
-                                      onPressed: () => deleteTransaction(provider.deleteTransaction, transaction, context)),
+                                  TextButton(child: Text("Delete"), onPressed: () => deleteTransaction(provider.deleteTransaction, transaction, context)),
                                 ],
                               );
                             });
@@ -95,8 +94,6 @@ class _TransactionsState extends State<Transactions> {
           }
         },
       ),
-
-
       floatingActionButton: new FloatingActionButton(
           onPressed: () {
             showModalBottomSheet(
